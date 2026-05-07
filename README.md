@@ -1,26 +1,80 @@
-# Benchmark de Algoritmos Concorrentes em Java
+# Benchmark de Busca e Ordenacao em Java
 
-Este repositório contém a implementação e a análise de desempenho de algoritmos clássicos de ordenação e busca, comparando suas versões sequenciais (single-thread) e paralelas (multi-thread) utilizando a linguagem Java.
+Projeto academico em Java para demonstrar algoritmos de ordenacao e comparar o desempenho de busca sequencial e busca paralela com diferentes quantidades de threads.
 
-Este projeto foi desenvolvido como trabalho acadêmico para a disciplina de Programação Concorrente/Paralela.
+O projeto tambem gera um dashboard HTML com graficos a partir dos resultados do benchmark.
 
-## 🎯 Objetivo
+## Arquivos do projeto
 
-O objetivo principal é investigar o comportamento dos algoritmos sob diferentes configurações de processamento, ajustando o número de núcleos (threads) disponíveis e o tamanho dos conjuntos de dados. O projeto gera dados analíticos em formato CSV para calcular métricas de *Speedup* e demonstrar os limites da aceleração paralela (Lei de Amdahl).
+- `SortingAlgorithms.java`: demonstra Bubble Sort, Insertion Sort, Merge Sort e Quick Sort.
+- `SearchBenchmark.java`: executa a busca sequencial e a busca paralela, gerando os tempos em CSV.
+- `DashboardExporter.java`: le o CSV gerado e cria o dashboard em HTML.
+- `.gitignore`: evita subir arquivos compilados, resultados gerados e possiveis arquivos sensiveis.
 
-## 📂 Estrutura do Repositório
+## Arquivos gerados
 
-* `Ordenacao.java`: Implementação dos algoritmos de ordenação Bubble Sort, Insertion Sort, Merge Sort e Quick Sort.
-* `BenchmarkBusca.java`: *Framework* de testes que executa a Busca Linear sequencial e a Busca Paralela (utilizando `ExecutorService`), variando o tamanho do array e o número de threads.
-* `resultados_benchmark.csv`: Arquivo gerado automaticamente pela execução do benchmark, contendo os tempos de execução de cada amostra.
-* `Relatorio_Final.pdf`: (Adicione o seu PDF do relatório aqui) Apresentação dos resultados, gráficos e análises estatísticas do desempenho.
+Estes arquivos sao criados ao rodar o projeto e nao precisam ser enviados para o GitHub:
 
-## 🚀 Como Executar
+- `*.class`
+- `benchmark_results.csv`
+- `dashboard.html`
 
-### Pré-requisitos
-Certifique-se de ter o **Java Development Kit (JDK)** instalado na sua máquina (versão 8 ou superior).
+## Pre-requisitos
 
-Para verificar a instalação, abra o terminal e digite:
+Instale o JDK. O projeto foi testado com Java 21, mas tambem deve funcionar em versoes recentes do Java.
+
+Para verificar:
+
 ```bash
 java -version
 javac -version
+```
+
+## Como compilar
+
+Na pasta do projeto, execute:
+
+```bash
+javac *.java
+```
+
+## Como rodar
+
+Para executar a demonstracao dos algoritmos de ordenacao:
+
+```bash
+java SortingAlgorithms
+```
+
+Para executar o benchmark de busca:
+
+```bash
+java SearchBenchmark
+```
+
+Esse comando gera o arquivo `benchmark_results.csv`.
+
+Para gerar o dashboard:
+
+```bash
+java DashboardExporter
+```
+
+Esse comando gera o arquivo `dashboard.html` e tenta abrir automaticamente o dashboard no navegador.
+
+## Fluxo completo
+
+```bash
+javac *.java
+java SortingAlgorithms
+java SearchBenchmark
+java DashboardExporter
+```
+
+## Observacao sobre desempenho
+
+O benchmark usa arrays grandes, incluindo 10 milhoes, 50 milhoes e 100 milhoes de elementos. Dependendo do computador, a execucao pode demorar e consumir bastante memoria.
+
+## GitHub
+
+O repositorio deve versionar principalmente os arquivos `.java`, o `README.md` e o `.gitignore`. Os arquivos compilados e resultados gerados ficam fora do versionamento por causa do `.gitignore`.
