@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
 
 public class SortingBenchmark {
     private static final String OUTPUT_FILE_NAME = "benchmark_results.csv";
-    private static final int[] DEFAULT_DATA_SIZES = {1_000, 5_000, 10_000};
+    private static final int[] DEFAULT_DATA_SIZES = {5_000, 10_000, 50_000};
     private static final int[] THREAD_CONFIGURATIONS = {2, 4, 8, 16};
     private static final int DEFAULT_SAMPLES = 5;
 

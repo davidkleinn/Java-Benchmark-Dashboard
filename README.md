@@ -1,89 +1,104 @@
 # Benchmark de Algoritmos de Ordenacao em Java
 
-Projeto academico em Java para implementar algoritmos de ordenacao e comparar o desempenho das versoes seriais e paralelas com diferentes tamanhos de entrada e quantidades de threads.
+Projeto academico em Java para implementar algoritmos de ordenacao e comparar o desempenho entre versoes seriais e paralelas, variando o tamanho da entrada e a quantidade de threads.
 
-O projeto gera um arquivo CSV com os tempos coletados e um dashboard HTML dinamico com graficos a partir desses resultados.
+O benchmark gera um CSV com os tempos medidos e o projeto tambem cria um dashboard HTML dinamico com graficos desses resultados.
 
-## Algoritmos implementados
+## Algoritmos
 
-- Bubble Sort serial
-- Insertion Sort serial
-- Merge Sort serial
-- Quick Sort serial
-- Merge Sort paralelo com `ForkJoinPool`
-- Quick Sort paralelo com `ForkJoinPool`
+Versoes seriais:
 
-Bubble Sort e Insertion Sort foram mantidos como versoes seriais porque sao algoritmos simples, com baixo ganho pratico de paralelizacao. As versoes paralelas foram aplicadas em Merge Sort e Quick Sort, que seguem a estrategia de divisao e conquista.
+- Bubble Sort
+- Insertion Sort
+- Merge Sort
+- Quick Sort
 
-## Arquivos do projeto
+Versoes paralelas:
 
-- `SortingAlgorithms.java`: implementa os algoritmos de ordenacao seriais e paralelos.
-- `SortingBenchmark.java`: executa o benchmark de ordenacao e gera o CSV.
-- `SearchBenchmark.java`: atalho de compatibilidade que chama `SortingBenchmark`.
-- `DashboardExporter.java`: le o CSV gerado e cria o dashboard HTML.
+- Merge Sort com `ForkJoinPool`
+- Quick Sort com `ForkJoinPool`
 
-## Arquivos gerados
+Bubble Sort e Insertion Sort ficam apenas na versao serial porque nao sao boas escolhas praticas para paralelizacao. Merge Sort e Quick Sort foram escolhidos para as versoes paralelas por seguirem divisao e conquista.
 
-Estes arquivos sao criados ao rodar o projeto mas nao precisaram ser enviados para o GitHub:
+## Arquivos
 
-- `*.class`
-- `benchmark_results.csv`
-- `dashboard.html`
+- `SortingAlgorithms.java`: implementa os algoritmos seriais e paralelos.
+- `SortingBenchmark.java`: executa o benchmark de ordenacao e gera `benchmark_results.csv`.
+- `SearchBenchmark.java`: atalho legado que chama `SortingBenchmark`.
+- `DashboardExporter.java`: le o CSV e gera `dashboard.html`.
+- `.gitignore`: ignora arquivos compilados e arquivos gerados pelo benchmark.
 
 ## Pre-requisitos
 
-Instale o JDK. O projeto foi testado com Java 21, mas tambem deve funcionar em versoes recentes do Java.
+Use um JDK recente. O projeto foi testado com Java 21.
 
 ```bash
 java -version
 javac -version
 ```
 
-## Como compilar
+## Como Compilar
 
-Na pasta do projeto, execute:
+Na pasta do projeto:
 
 ```bash
 javac *.java
 ```
 
-## Como rodar
+## Como Rodar
 
-Para executar a demonstracao dos algoritmos de ordenacao:
+Para demonstrar os algoritmos com um array pequeno:
 
 ```bash
 java SortingAlgorithms
 ```
 
-Para executar o benchmark de ordenacao:
+Para executar o benchmark com a configuracao padrao:
 
 ```bash
 java SortingBenchmark
 ```
 
-Esse comando gera o arquivo `benchmark_results.csv`. Por padrao, ele usa 1.000, 5.000 e 10.000 elementos, com 5 amostras por configuracao.
+Padrao atual:
 
-Tambem e possivel informar os tamanhos e a quantidade de amostras:
+- tamanhos: `1.000`, `5.000` e `10.000` elementos
+- amostras: `5` por configuracao
+- threads paralelas: `2`, `4`, `8` e `16`
+- saida: `benchmark_results.csv`
+
+Para informar tamanhos e numero de amostras:
 
 ```bash
 java SortingBenchmark "10000,50000,100000" 5
 ```
 
-Para testes maiores, voce pode filtrar os algoritmos e evitar Bubble/Insertion:
+Para rodar somente alguns algoritmos, informe o filtro no terceiro argumento:
 
 ```bash
 java SortingBenchmark "100000,500000,1000000" 3 "merge,quick"
 ```
 
-Para gerar o dashboard:
+Filtros aceitos funcionam por nome parcial, como `bubble`, `insertion`, `merge`, `quick` ou `all`.
+
+## Dashboard
+
+Depois de gerar o CSV:
 
 ```bash
 java DashboardExporter
 ```
 
-Esse comando gera o arquivo `dashboard.html` e tenta abrir automaticamente o dashboard no navegador.
+Esse comando cria `dashboard.html` e tenta abrir o arquivo no navegador.
 
-## Fluxo completo
+Para gerar o HTML sem abrir automaticamente:
+
+```bash
+java DashboardExporter benchmark_results.csv dashboard.html --no-open
+```
+
+O dashboard permite filtrar por algoritmo e tamanho de entrada, mostrando tempo medio, speedup e variacao entre amostras.
+
+## Fluxo Completo
 
 ```bash
 javac *.java
@@ -92,8 +107,24 @@ java SortingBenchmark
 java DashboardExporter
 ```
 
-## Observacao sobre desempenho
+## Formato do CSV
 
-Ordenar arrays muito grandes com Bubble Sort ou Insertion Sort pode demorar muito. Para testes com milhoes de elementos, e recomendado reduzir os algoritmos testados ou focar em Merge Sort e Quick Sort.
+O arquivo `benchmark_results.csv` usa as colunas:
 
-O benchmark registra as colunas `Algorithm`, `DataSize`, `ExecutionMode`, `Threads`, `Sample`, `TimeMs` e `Sorted`. A coluna `Sorted` confirma se a ordenacao produziu uma saida correta.
+- `Algorithm`: algoritmo testado
+- `DataSize`: tamanho do array
+- `ExecutionMode`: `Sequential` ou `Parallel`
+- `Threads`: quantidade de threads usada
+- `Sample`: numero da amostra
+- `TimeMs`: tempo em milissegundos
+- `Sorted`: confirma se a saida ficou ordenada
+
+## Observacoes de Desempenho
+
+Bubble Sort e Insertion Sort podem ficar muito lentos em entradas grandes. Para testes com centenas de milhares ou milhoes de elementos, use preferencialmente:
+
+```bash
+java SortingBenchmark "100000,500000,1000000" 3 "merge,quick"
+```
+
+Os arquivos `*.class`, `benchmark_results.csv` e `dashboard.html` sao gerados localmente e ficam fora do versionamento.

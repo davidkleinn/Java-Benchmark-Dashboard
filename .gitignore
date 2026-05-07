@@ -29,3 +29,11 @@ Thumbs.db
 *.pem
 *.p12
 *.jks
+
+# to run and compile try this:
+
+javac SortingAlgorithms.java SortingBenchmark.java DashboardExporter.java
+
+java SortingBenchmark 5000,10000,50000 5
+
+java DashboardExporter benchmark_results.csv dashboard.html
