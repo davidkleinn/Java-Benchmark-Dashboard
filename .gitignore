@@ -1,0 +1,31 @@
+# Java build output
+*.class
+*.jar
+*.war
+*.ear
+
+# Generated benchmark/dashboard files
+benchmark_results.csv
+dashboard.html
+
+# IDE/editor files
+.vscode/
+.idea/
+*.iml
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs and temporary files
+*.log
+*.tmp
+*.temp
+
+# Environment
+.env
+.env.*
+*.key
+*.pem
+*.p12
+*.jks
