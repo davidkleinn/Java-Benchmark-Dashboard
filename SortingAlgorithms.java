@@ -1,6 +1,9 @@
 import java.util.Arrays;
+import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.RecursiveAction;
 
 public class SortingAlgorithms {
+    private static final int PARALLEL_THRESHOLD = 16_384;
 
     // ==========================================
     // 1. Bubble Sort
@@ -48,6 +51,41 @@ public class SortingAlgorithms {
 
             mergeSort(array, left, middle);
             mergeSort(array, middle + 1, right);
+            merge(array, left, middle, right);
+        }
+    }
+
+    public static void parallelMergeSort(int[] array, int threadCount) {
+        if (array.length < 2) return;
+        ForkJoinPool pool = new ForkJoinPool(threadCount);
+        try {
+            pool.invoke(new MergeSortTask(array, 0, array.length - 1));
+        } finally {
+            pool.shutdown();
+        }
+    }
+
+    private static class MergeSortTask extends RecursiveAction {
+        private final int[] array;
+        private final int left;
+        private final int right;
+
+        MergeSortTask(int[] array, int left, int right) {
+            this.array = array;
+            this.left = left;
+            this.right = right;
+        }
+
+        @Override
+        protected void compute() {
+            if (right - left <= PARALLEL_THRESHOLD) {
+                mergeSort(array, left, right);
+                return;
+            }
+
+            int middle = left + (right - left) / 2;
+            invokeAll(new MergeSortTask(array, left, middle),
+                    new MergeSortTask(array, middle + 1, right));
             merge(array, left, middle, right);
         }
     }
@@ -100,6 +138,40 @@ public class SortingAlgorithms {
         }
     }
 
+    public static void parallelQuickSort(int[] array, int threadCount) {
+        if (array.length < 2) return;
+        ForkJoinPool pool = new ForkJoinPool(threadCount);
+        try {
+            pool.invoke(new QuickSortTask(array, 0, array.length - 1));
+        } finally {
+            pool.shutdown();
+        }
+    }
+
+    private static class QuickSortTask extends RecursiveAction {
+        private final int[] array;
+        private final int start;
+        private final int end;
+
+        QuickSortTask(int[] array, int start, int end) {
+            this.array = array;
+            this.start = start;
+            this.end = end;
+        }
+
+        @Override
+        protected void compute() {
+            if (end - start <= PARALLEL_THRESHOLD) {
+                quickSort(array, start, end);
+                return;
+            }
+
+            int pivotIndex = partition(array, start, end);
+            invokeAll(new QuickSortTask(array, start, pivotIndex - 1),
+                    new QuickSortTask(array, pivotIndex + 1, end));
+        }
+    }
+
     private static int partition(int[] array, int start, int end) {
         int pivot = array[end];
         int i = start - 1;
@@ -144,5 +216,13 @@ public class SortingAlgorithms {
         int[] quickSorted = originalArray.clone();
         quickSort(quickSorted, 0, quickSorted.length - 1);
         System.out.println("Quick Sort:     " + Arrays.toString(quickSorted));
+
+        int[] parallelMergeSorted = originalArray.clone();
+        parallelMergeSort(parallelMergeSorted, 4);
+        System.out.println("Parallel Merge: " + Arrays.toString(parallelMergeSorted));
+
+        int[] parallelQuickSorted = originalArray.clone();
+        parallelQuickSort(parallelQuickSorted, 4);
+        System.out.println("Parallel Quick: " + Arrays.toString(parallelQuickSorted));
     }
 }
