@@ -9,11 +9,10 @@ O projeto tambem gera um dashboard HTML com graficos a partir dos resultados do 
 - `SortingAlgorithms.java`: demonstra Bubble Sort, Insertion Sort, Merge Sort e Quick Sort.
 - `SearchBenchmark.java`: executa a busca sequencial e a busca paralela, gerando os tempos em CSV.
 - `DashboardExporter.java`: le o CSV gerado e cria o dashboard em HTML.
-- `.gitignore`: evita subir arquivos compilados, resultados gerados e possiveis arquivos sensiveis.
 
 ## Arquivos gerados
 
-Estes arquivos sao criados ao rodar o projeto e nao precisam ser enviados para o GitHub:
+Estes arquivos sao criados ao rodar o projeto mas nao precisaram ser enviados para o GitHub:
 
 - `*.class`
 - `benchmark_results.csv`
