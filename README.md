@@ -2,7 +2,7 @@
 
 Projeto academico em Java para implementar algoritmos de ordenacao e comparar o desempenho entre versoes seriais e paralelas, variando o tamanho da entrada, a natureza dos dados e a quantidade de threads.
 
-O benchmark gera um CSV com os tempos medidos e o projeto tambem cria um dashboard HTML dinamico com graficos desses resultados.
+O benchmark gera um CSV com os tempos medidos e o projeto tambem cria um dashboard em HTML dinamico com graficos desses resultados.
 
 ## Algoritmos
 
