@@ -63,6 +63,7 @@ public class SortingAlgorithms {
         } finally {
             pool.shutdown();
         }
+        pool.close();
     }
 
     private static class MergeSortTask extends RecursiveAction {
@@ -146,6 +147,7 @@ public class SortingAlgorithms {
         } finally {
             pool.shutdown();
         }
+        pool.close();
     }
 
     private static class QuickSortTask extends RecursiveAction {
